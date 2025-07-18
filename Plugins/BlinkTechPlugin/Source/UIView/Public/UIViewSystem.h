@@ -223,7 +223,7 @@ public:
 
 		TArray<TWeakObjectPtr<T>> ActivatedViews = ThisWeak->GetAllStackedViews<T>();
 		if (ActivatedViews.IsValidIndex(0) && ActivatedViews[0].IsValid())
-			ThisWeak->Hide(ActivatedViews[0]);
+			ThisWeak->Hide(ActivatedViews[0]); // 스택 최상단에 출력중인 위젯을 찾아 Hide -> Pool로 되돌림.
 
 		Show<T>(InShowFunction, InCancelFunction);
 	}
@@ -236,7 +236,7 @@ public:
 		if (ThisWeak.IsValid() == false || IsValid(InWidgetStaticClass) == false)
 			return;
 		
-		if (GetTopUIView<T>() == false)
+		if (ThisWeak->GetTopUIView<T>() == false)
 		{
 			ReplaceView<T>(InShowFunction);
 		}
@@ -244,7 +244,7 @@ public:
 		{
 			// 활성화 된 위젯은 없지만, 로딩 중인 위젯이 있는 경우라면, 아무것도 하지 않고 리턴.
 			FName InWidgetName = InWidgetStaticClass->GetFName();
-			if (IsLoadingWidget(InWidgetName))
+			if (ThisWeak->IsLoadingWidget(InWidgetName))
 				return;
 			
 			Hide<T>();

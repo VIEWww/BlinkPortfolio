@@ -159,6 +159,12 @@ void UUIViewLayerPanel::AddWidget(UClass* InLayerWidgetClass, TFunction<void(TWe
 			TWeakObjectPtr<UUIViewBase> CreatedWidgetPtr = UUIViewSystem::Get()->GetOrCreateUIViewWidget(WidgetName);
 			if (CreatedWidgetPtr.IsValid())
 			{
+				int32 ChildIndex = Layer_Overlay->GetChildIndex(CreatedWidgetPtr.Get());
+				if (ChildIndex >= 0)
+				{
+					Layer_Overlay->RemoveChildAt(ChildIndex);
+				}
+				
 				Layer_Overlay->AddChildToOverlay(CreatedWidgetPtr.Get());
 				TWeakObjectPtr<UOverlaySlot> OverlaySlot = Cast<UOverlaySlot>(CreatedWidgetPtr->Slot);
 				if (OverlaySlot.IsValid())
@@ -167,9 +173,6 @@ void UUIViewLayerPanel::AddWidget(UClass* InLayerWidgetClass, TFunction<void(TWe
 					OverlaySlot->SetHorizontalAlignment(HAlign_Fill);
 					OverlaySlot->SetVerticalAlignment(VAlign_Fill);
 				}
-				
-				int32 LastIndex = FMath::Max(0, Layer_Overlay->GetChildrenCount() - 1);
-				Layer_Overlay->ShiftChild(LastIndex, CreatedWidgetPtr.Get());
 
 				CreatedWidgetPtr->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 				InFunction(CreatedWidgetPtr);

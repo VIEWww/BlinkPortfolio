@@ -44,7 +44,7 @@ public:
 	// 레이어에 위젯 삭제.
 	void RemoveWidgetInLayer(TWeakObjectPtr<UUIViewBase> InHideWidget);
 	
-	// 브링백 플래그 설정.
+	// BringBack 플래그 설정.
 	void SetFlagBringBackPrevView(TWeakObjectPtr<UUIViewBase> InWidget);
 
 

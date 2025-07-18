@@ -35,6 +35,9 @@ protected:
 	UFUNCTION()
 	void OnButtonClicked_ShowSystemMsg();
 
+public:
+	void RefreshTitle();
+
 protected:
 	UPROPERTY(meta = (BindWidgetOptional))
 	UCommonTextBlock* Text_Title = nullptr; 

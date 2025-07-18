@@ -18,8 +18,8 @@ void UBKCUIHUD_InGameMain::NativeConstruct()
 void UBKCUIHUD_InGameMain::OnViewActivated()
 {
 	Super::OnViewActivated();
+
 	
-	SetConsumePointerInput(false);
 }
 
 void UBKCUIHUD_InGameMain::OnButtonClicked_Menu()

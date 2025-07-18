@@ -23,7 +23,6 @@ enum class EBKCUIViewLayerType : uint8
 	HUD,				// 메인 HUD UI 레이어.
 	Page,				// HUD 위에 화면 전체를 덮는 UI 레이어.
 	Popup,				// 팝업 UI 레이어.
-	Tooltip,			// 툴팁 UI 레이어.
 	SystemMsg,			// 시스템 메시지 레이어.
 	
 	MAX,

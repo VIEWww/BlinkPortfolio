@@ -6,6 +6,7 @@
 #include "CommonButtonBase.h"
 #include "BKCUIPage_MainMenu.h"
 #include "CommonTextBlock.h"
+#include "UIViewLayerPanel.h"
 #include "BlinkPortfolio/Utility/BKLibrary.h"
 #include "UIViewSystem.h"
 #include "BlinkPortfolio/UI/UIViewWidgets/SystemMsg/BKCUISystemMsg_Common.h"
@@ -31,19 +32,17 @@ void UBKCUIPage_SubMenu::OnDisplayedWidgetChangedFromStack()
 {
 	Super::OnDisplayedWidgetChangedFromStack();
 	
-	if (IsValid(Text_Title))
-	{
-		int32 ObjectNum = UBKUIViewSystem::Get()->GetAllStackedViews<UBKCUIPage_SubMenu>().Num();
-		FString TitleString = FString::Printf(TEXT("Page_SubMenu_%d"), ObjectNum);
-
-		Text_Title->SetText(FText::FromString(TitleString));
-	}
+	RefreshTitle();
 }
 
 void UBKCUIPage_SubMenu::OnShow()
 {
 	Super::OnShow();
-	
+
+	if (GetLayerPanelType() == EUIViewLayerPanelType::Overlay)
+	{
+		RefreshTitle();
+	}
 }
 
 void UBKCUIPage_SubMenu::OnButtonClicked_ShowMainMenu()
@@ -68,5 +67,16 @@ void UBKCUIPage_SubMenu::OnButtonClicked_ShowSystemMsg()
 		return;
 	
 	UBKCUISystemMsg_Common::Show(TEXT("이 메시지는 테스트용 시스템 메시지 입니다."));
+}
+
+void UBKCUIPage_SubMenu::RefreshTitle()
+{
+	if (IsValid(Text_Title))
+	{
+		int32 ObjectNum = UBKUIViewSystem::Get()->GetAllStackedViews<UBKCUIPage_SubMenu>().Num();
+		FString TitleString = FString::Printf(TEXT("Page_SubMenu\nStack Index : %d"), ObjectNum);
+
+		Text_Title->SetText(FText::FromString(TitleString));
+	}
 }
 

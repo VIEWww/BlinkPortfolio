@@ -6,6 +6,7 @@
 #include "BKCUIPage_SubMenu.h"
 #include "CommonButtonBase.h"
 #include "CommonTextBlock.h"
+#include "UIViewLayerPanel.h"
 #include "BlinkPortfolio/UI/UIViewSystem/BKUIViewSystem.h"
 #include "BlinkPortfolio/UI/UIViewWidgets/Popup/BKCUIPopup_Common.h"
 #include "BlinkPortfolio/Utility/BKLibrary.h"
@@ -28,20 +29,18 @@ void UBKCUIPage_MainMenu::OnViewActivated()
 void UBKCUIPage_MainMenu::OnDisplayedWidgetChangedFromStack()
 {
 	Super::OnDisplayedWidgetChangedFromStack();
-
-	if (IsValid(Text_Title))
-	{
-		int32 ObjectNum = UBKUIViewSystem::Get()->GetAllStackedViews<UBKCUIPage_MainMenu>().Num();
-		FString TitleString = FString::Printf(TEXT("Page_MainMenu_%d"), ObjectNum);
-
-		Text_Title->SetText(FText::FromString(TitleString));
-	}
+	
+	RefreshTitle();
 }
 
 void UBKCUIPage_MainMenu::OnShow()
 {
 	Super::OnShow();
 
+	if (GetLayerPanelType() == EUIViewLayerPanelType::Overlay)
+	{
+		RefreshTitle();
+	}
 }
 
 void UBKCUIPage_MainMenu::OnHide()
@@ -86,4 +85,15 @@ void UBKCUIPage_MainMenu::OnButtonClicked_Popup()
 	// 		Popup_Common->OkCallback = OkCallback;
 	// 	}
 	// });
+}
+
+void UBKCUIPage_MainMenu::RefreshTitle()
+{
+	if (IsValid(Text_Title))
+	{
+		int32 ObjectNum = UBKUIViewSystem::Get()->GetAllStackedViews<UBKCUIPage_MainMenu>().Num();
+		FString TitleString = FString::Printf(TEXT("Page_MainMenu\nStack Index : %d"), ObjectNum);
+
+		Text_Title->SetText(FText::FromString(TitleString));
+	}
 }

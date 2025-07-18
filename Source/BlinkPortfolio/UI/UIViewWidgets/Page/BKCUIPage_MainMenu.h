@@ -26,13 +26,15 @@ protected:
 
 	virtual void OnShow() override;
 	virtual void OnHide() override;
-
-
+	
 	UFUNCTION()
 	void OnButtonClicked_SubMenu();
 
 	UFUNCTION()
 	void OnButtonClicked_Popup();
+
+public:
+	void RefreshTitle();
 
 protected:
 	UPROPERTY(meta = (BindWidgetOptional))
