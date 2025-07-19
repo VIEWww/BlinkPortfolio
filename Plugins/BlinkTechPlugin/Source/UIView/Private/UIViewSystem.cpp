@@ -165,26 +165,28 @@ void UUIViewSystem::TryLoadWidget(UClass* InWidgetStaticClass)
 		return;
 	}
 	
-	const FSoftClassPath InBPWidgetPath = DetermineLayerWidgetPath(InWidgetStaticClass);
 	if (IsSyncLoadWidget(InWidgetStaticClass))
 	{
 		// 동기 로드
-		LoadWidgetSyncronous(InBPWidgetPath);
+		LoadWidgetSyncronous(InWidgetStaticClass);
 	}
 	else
 	{
 		// 비동기 로드
-		LoadWidgetAsync(InBPWidgetPath);	
+		LoadWidgetAsync(InWidgetStaticClass);
 	}
 }
 
-void UUIViewSystem::LoadWidgetAsync(const FSoftClassPath& InBPWidgetPath)
+void UUIViewSystem::LoadWidgetAsync(UClass* InWidgetStaticClass)
 {
-	AsyncLoadHandler = UAssetManager::GetStreamableManager().RequestAsyncLoad(InBPWidgetPath, [this, InBPWidgetPath]()
+	const FSoftClassPath InBPWidgetPath = DetermineLayerWidgetPath(InWidgetStaticClass);
+	AsyncLoadHandler = UAssetManager::GetStreamableManager().RequestAsyncLoad(InBPWidgetPath, [this, =]()
 	{
 		TWeakObjectPtr<UClass> LoadedWidget = TSoftClassPtr<UUIViewBase>(InBPWidgetPath).Get();
 		if (LoadedWidget.IsValid() == false)
 		{
+			FName InLayerWidgetName = InWidgetStaticClass->GetFName();
+			ExcuteShowCancelWidget(InLayerWidgetName);
 			ensure(TEXT("Error : Failed Async Laod Widget :: Invalid Widget Or Path !!!"));
 			return;
 		}
@@ -225,15 +227,17 @@ void UUIViewSystem::PerformReservedWidgetLoad()
 	TryLoadWidget(NextWidgetLoadClass);
 }
 
-void UUIViewSystem::LoadWidgetSyncronous(const FSoftClassPath& InBPWidgetPath)
+void UUIViewSystem::LoadWidgetSyncronous(UClass* InWidgetStaticClass)
 {
+	const FSoftClassPath InBPWidgetPath = DetermineLayerWidgetPath(InWidgetStaticClass);
 	TWeakObjectPtr<UClass> LoadedWidget = UAssetManager::GetStreamableManager().LoadSynchronous<UClass>(InBPWidgetPath);
 	if (LoadedWidget.IsValid() == false)
 	{
+		FName InLayerWidgetName = InWidgetStaticClass->GetFName();
+		ExcuteShowCancelWidget(InLayerWidgetName);
 		ensure(TEXT("Error : Failed Async Laod Widget :: Invalid Widget Or Path !!!"));
 		return;
 	}
-
 	OnPostLoadWidget(LoadedWidget.Get());
 }
 

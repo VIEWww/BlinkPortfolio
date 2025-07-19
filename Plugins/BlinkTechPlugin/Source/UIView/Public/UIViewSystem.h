@@ -365,9 +365,9 @@ private:
 	void TryLoadWidget(UClass* InWidgetStaticClass);
 
 	// 동기 로드 -----------------------------------------------------------------------------
-	void LoadWidgetSyncronous(const FSoftClassPath& InBPWidgetPath);
+	void LoadWidgetSyncronous(UClass* InWidgetStaticClass);
 	// 비동기 로드 ---------------------------------------------------------------------------
-	void LoadWidgetAsync(const FSoftClassPath& InBPWidgetPath);
+	void LoadWidgetAsync(UClass* InWidgetStaticClass);
 	// 현재 비동기 로드가 진행중인가?
 	bool IsAsyncLoading() const;
 
