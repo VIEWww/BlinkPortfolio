@@ -3,12 +3,10 @@
 
 #include "UIViewLayer.h"
 
-#include "UIView.h"
-#include "UIViewLayerPanel.h"
 #include "UIViewBase.h"
-#include "UIViewSettings.h"
 #include "UIViewSystem.h"
-#include "Components/CanvasPanel.h"
+#include "UIViewLayerPanel.h"
+
 #include "Components/CanvasPanelSlot.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
 
@@ -43,11 +41,6 @@ void UUIViewLayer::LoadLayerPanelMap()
 		TWeakObjectPtr<UUIViewLayerPanel> CurStackLayer = Cast<UUIViewLayerPanel>(GetWidgetFromName(LayerName));
 		if (CurStackLayer.IsValid())
 		{
-			TWeakObjectPtr<UCanvasPanelSlot> CurPanelSlot = Cast<UCanvasPanelSlot>(CurStackLayer->Slot);
-			if (CurPanelSlot.IsValid())
-			{
-				CurPanelSlot->SetZOrder(CurLayerInfo.Value.LayerOrder);
-			}
 			LayerPanelMap.Add(LayerName, CurStackLayer.Get());
 		}
 	}

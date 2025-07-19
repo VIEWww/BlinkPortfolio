@@ -364,7 +364,10 @@ void UUIViewSystem::OnDestructViewLayer()
 
 FSoftClassPath UUIViewSystem::DetermineLayerWidgetPath(const UClass* InLayerWidgetClass) const
 {
-	FString LayerString = DetermineLayerName(InLayerWidgetClass).ToString();
+	FName LayerName = DetermineLayerName(InLayerWidgetClass);
+	const FUIViewLayerInfo& LayerInfo = AllLayerInfo.FindRef(LayerName);
+	
+	FString LayerString = LayerInfo.LayerPath;
 	FString WidgetNameString = InLayerWidgetClass->GetFName().ToString();
 
 	TArray<FStringFormatArg> PathArgs;

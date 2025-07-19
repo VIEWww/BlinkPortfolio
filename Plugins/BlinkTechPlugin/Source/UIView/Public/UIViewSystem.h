@@ -18,19 +18,15 @@ struct FUIViewLayerInfo
 	GENERATED_BODY()
 
 	FUIViewLayerInfo() {}
-	FUIViewLayerInfo(const FName& InLayerName) : LayerName(InLayerName) {}
+	FUIViewLayerInfo(const FName& InLayerName) : LayerName(InLayerName), LayerPath(InLayerName.ToString()) {}
+	FUIViewLayerInfo(const FName& InLayerName, const FString& InLayerPath) : LayerName(InLayerName), LayerPath(InLayerPath) {}
 	~FUIViewLayerInfo() {}
-
-	void SetLayerOrder(uint8 InLayerOrder) { LayerOrder = InLayerOrder; }
 
 	UPROPERTY(EditAnywhere)
 	FName LayerName = NAME_None;
 	
 	UPROPERTY(EditAnywhere)
 	FString LayerPath = TEXT("");
-
-	UPROPERTY(EditAnywhere)
-	uint8 LayerOrder = 0;
 };
 
 USTRUCT()
@@ -133,7 +129,6 @@ public:
 		}
 		
 		ThisWeak->OwnerInstance = InGameInstance;
-		ThisWeak->AddToRoot();
 		ThisWeak->InitSettings();
 		ThisWeak->OnPostInstall();
 	}
@@ -445,7 +440,7 @@ private:
 	UPROPERTY()
 	TMap<FName, FUIViewLayerInfo> AllLayerInfo;
 
-	// UI 레이어 위젯.
+	// 시스템 Owner Instance
 	UPROPERTY()
 	TWeakObjectPtr<UGameInstance> OwnerInstance = nullptr;
 	
@@ -456,7 +451,6 @@ private:
 	// 위젯 생성에 필요한 클래스 캐시.
 	UPROPERTY()
 	TMap<FName, UClass*> WidgetCalssCacheMap;
-	// TLruCache<FName, UClass*> WidgetCalssCacheMap;
 
 	// CreateWiget으로 생성한 위젯 오브젝트 캐시.
 	UPROPERTY()
