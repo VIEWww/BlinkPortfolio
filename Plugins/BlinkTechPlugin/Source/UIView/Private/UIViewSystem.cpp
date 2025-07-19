@@ -180,7 +180,7 @@ void UUIViewSystem::TryLoadWidget(UClass* InWidgetStaticClass)
 void UUIViewSystem::LoadWidgetAsync(UClass* InWidgetStaticClass)
 {
 	const FSoftClassPath InBPWidgetPath = DetermineLayerWidgetPath(InWidgetStaticClass);
-	AsyncLoadHandler = UAssetManager::GetStreamableManager().RequestAsyncLoad(InBPWidgetPath, [this, =]()
+	AsyncLoadHandler = UAssetManager::GetStreamableManager().RequestAsyncLoad(InBPWidgetPath, [=]()
 	{
 		TWeakObjectPtr<UClass> LoadedWidget = TSoftClassPtr<UUIViewBase>(InBPWidgetPath).Get();
 		if (LoadedWidget.IsValid() == false)
